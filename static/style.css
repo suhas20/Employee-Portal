@@ -1,0 +1,149 @@
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+}
+
+#Header{
+    text-align: center;
+}
+
+.usercontainer{
+    background:blueviolet;
+    height: 20vh;
+}
+
+.sidebar{
+    height:75vh;
+}
+
+.main {
+    background-color: orange;
+    height: 45vh;
+}
+.right {
+    background-color: lavender;
+    height: 45vh; 
+}
+
+.header{
+    text-align: center;
+}
+
+.centerlist .nav-link {
+    color: black
+}
+
+.centerlist .nav-link:hover {
+  color: cyan
+}
+
+.footer {
+  height: 34vh;
+}
+.header {
+    background-color: lightgray;
+    height: 20vh;
+}
+.sidebar {
+    height: 80vh;
+}
+
+.calendar {
+    width: 100%;
+    max-width: 600px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+    text-align: center;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.calendar-header .month {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.calendar-header .days {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.calendar-body {
+    padding: 10px;
+}
+
+.week {
+    display: flex;
+    justify-content: space-between;
+}
+
+.day {
+    width: 14%;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.day.empty {
+    background-color: #f0f0f0;
+}
+
+.TimesheetCard{
+    height: 79vh;
+    margin-top: 5px;
+}
+.TimesheetCard hr{
+    border: 1px solid black;
+    margin-top: 0;
+}
+.calendarCard{
+    margin-top: 5px;
+}
+
+.datecard{
+    margin: 10px 15px 0px 18px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+    border: 3px solid rgb(183, 168, 30);
+}
+
+
+.datecard hr{
+    width: 100%;
+    margin: 13px 0px 0px 0px;
+    border: 1px solid #0b0b0b;
+}
+
+.requestscard{
+    margin: 17px;
+    width: 72vw;
+    height: 63vh;
+}
+.btn {
+    cursor: pointer;
+}
+
+.btn:hover {
+    border-color: green;
+}
+
+.leavebutton{
+    margin: 20px 0;
+    width: 15vw;
+    height: 6vh;
+}
+
+.insertModal{
+    width: 100vw;
+}
