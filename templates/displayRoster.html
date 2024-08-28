@@ -1,11 +1,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://kit.fontawesome.com/4b6059de82.js" crossorigin="anonymous"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<title>XYZ GYM</title>
 
 {%  include "NavBar.html" %}
 <div class="container">
-    <h1 id="Header">Data from Database</h1>
 
     {%with messages = get_flashed_messages()%}
     {%if messages%}
@@ -20,12 +20,24 @@
     {%endif%}
     {%endwith%}
 
+    <div class="search-container">
+      <button type="button" class="btn btn-primary btn-sm Ad-trainer-btn" data-bs-toggle="modal" data-bs-target="#insertModal">
+        ADD New Employee
+      </button>
+  
+      <button type="button" class="btn btn-primary btn-sm Ad-trainer-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Update Shift
+      </button>
+      <input class="form-control SearchBar" id="myInput" type="search" placeholder="Search...">
+    </div>
+
+    
+
     <div class="row align-items-center">
         <div class="col">
             <table id = "DataTable" class="center table">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Employee ID</th>
                         <th>Employee Name</th>
                         <th>Employee Shift</th>
                         <th>Effective From</th>
@@ -33,14 +45,13 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="myTable">
                     {% for row in data %}
                     <tr>
-                        <td>{{ row[0] }}</td>
-                        <td>{{ row[1] }}</td>
                         <td>{{ row[2] }}</td>
                         <td>{{ row[3] }}</td>
                         <td>{{ row[4] }}</td>
+                        <td>{{ row[5] }}</td>
                         <td>
                           <a href="/delete/{{row[0]}}" onclick="return confirm('Are you sure you want to delete?')" style="color: #da1651; background-color: transparent; border: none;" class="btn btn-danger">
                             <i class="fa-solid fa-trash"></i>
@@ -58,11 +69,6 @@
 <br>
 <!--Modal for inserting data -->
 <div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#insertModal">
-    ADD New Employee
-    </button>
-  
   <!-- Modal -->
   <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="insertModal" aria-hidden="true">
     <div class="modal-dialog">
@@ -75,7 +81,12 @@
             <form action="{{ url_for('insertData')}}" method="POST" >
                 <div class="form-group">
                     <label>Employee Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Enter Employee Name">
+                    <select class="form-select" name="EmpName">
+                      {% for names in EmpNames%}
+                      <option value = {{names}}>{{names}}</option>
+                      {%endfor%}
+                    </select>
+                    
                 </div>
 
                 <div class="form-group">
@@ -110,11 +121,7 @@
 
 <!--Modal for updating data -->
 <div>
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Assign Shift
-  </button>
-
+  
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -126,13 +133,12 @@
       <div class="modal-body">
           <form action="{{ url_for('updateData')}}" method="POST" >
               <div class="form-group">
-                <label>Employee ID</label>
-                <input type="text" name="id" class="form-control" placeholder="Enter Employee ID">
-              </div>
-
-              <div class="form-group">
                   <label>Employee Name</label>
-                  <input type="text" name="name" class="form-control" placeholder="Enter Employee Name">
+                  <select class="form-select" name="TrainerName">
+                    {% for names in TrainersName%}
+                    <option value = {{names}}>{{names}}</option>
+                    {%endfor%}
+                  </select>
               </div>
 
               <div class="form-group">
@@ -164,3 +170,4 @@
 </div>
 </div>
 <!--close Modal -->
+<script src="{{url_for('static',filename='script.js')}}"></script>

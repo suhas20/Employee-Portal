@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='templatemo-training-studio.css') }}">
+  <script src="https://kit.fontawesome.com/4b6059de82.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 16px;
+        text-decoration: none;
+      }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        list-style: none;
+    }
+</style>
+<body>
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+  {% include "NavBar.html"%}
+</header>
+<!-- ***** Header Area End ***** -->
+<div class="loginbg">
+    <div class="logincontainer">
+        <h1 class="loginfont">SignUp<h1>
+       <form action="{{url_for('registerAdminPage')}}" class="form" method="POST">
+        <div class="form-group mb-4">
+            <input type="text" name="EmpName" id="registerName" class="form-control" placeholder="Name" />
+        </div>
+        <div class="form-group mb-4">
+            <input type="text" name="UsrName" id="UserName" class="form-control" placeholder="User name" />
+        </div>
+        <div class="form-group mb-4">
+            <input type="email" name="Usremail" id="Email" class="form-control" placeholder="Email" />
+        </div>
+        <div class="form-group mb-4">
+            <input type="password" name="Usrpwd" id="password" class="form-control" placeholder="Password" />
+        </div>
+        <div>
+            <div>
+                <input  type="radio" name="userType" value= 1 id="Admin">
+                <label class="loginfont"  for="Admin">
+                    <h2>Admin</h2>
+                </label>
+                &nbsp;
+                <input  type="radio" name="userType" value= 0 id="trainer">
+                <label class="loginfont" for="trainer">
+                  <h2>Trainer</h2>
+                </label>
+              </div>
+          </div>
+        <button class="btn btn-success" style="width:360px; margin-top:10px;"  type="submit">SignUp</button>
+       </form>
+    </div>
+</div>
+
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='jquery-2.1.0.min.js') }}"></script>
+
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='popper.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+<!-- Plugins -->
+<script src="{{ url_for('static', filename='scrollreveal.min.js') }}"></script>
+<script src="{{ url_for('static', filename='waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery.counterup.min.js') }}"></script>
+<script src="{{ url_for('static', filename='imgfix.min.js') }}"></script> 
+<script src="{{ url_for('static', filename='mixitup.js') }}"></script> 
+<script src="{{ url_for('static', filename='accordions.js') }}"></script>
+
+<!-- Global Init -->
+<script src="{{ url_for('static', filename='custom.js') }}"></script>
+</body>
+</html>

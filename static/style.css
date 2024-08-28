@@ -174,4 +174,48 @@
     background-color: #91C8E4 !important;
  }
 
+ .loginbg{
+    position: relative;
+    background-image: url(../static/images/contact-bg.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+ }
+
+ .logincontainer{
+    position: relative;
+    /* background: rgba(255, 255, 255, 0.8);  */
+    padding: 20px;
+    margin: 10px;
+    /* border-radius: 8px; */
+    width: 400px;
+ }
  
+ .loginfont{
+    color:rgba(255, 255, 255, 0.8) ;
+    margin: 10px;
+ }
+
+ .logininputbox{
+    width:400px !important;
+    margin-top: 20px;
+ }
+
+ .Ad-trainer-btn{
+    margin: 10px !important;
+ }
+
+ .SearchBar{
+    margin: 10px;
+    width: 30% !important;
+ }
+ .search-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+ }

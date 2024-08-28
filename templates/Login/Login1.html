@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='templatemo-training-studio.css') }}">
+  <script src="https://kit.fontawesome.com/4b6059de82.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 16px;
+        text-decoration: none;
+      }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        list-style: none;
+    }
+</style>
+<body>
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+  <div class="container">
+      <div class="row">
+          <div class="col-12">
+              <nav class="main-nav">
+                  <!-- ***** Logo Start ***** -->
+                  <a href="index.html" class="logo">Training<em> Studio</em></a>
+                  <!-- ***** Logo End ***** -->
+                  <!-- ***** Menu Start ***** -->
+                  <ul class="nav">
+                      <li class="scroll-to-section"><a href="/">Home</a></li>
+                      <li class="scroll-to-section"><a href="register">Register</a></li>
+                  </ul>
+                  <!-- ***** Menu End ***** -->
+              </nav>
+          </div>
+      </div>
+  </div>
+</header>
+<!-- ***** Header Area End ***** -->
+<div class="loginbg">
+    <div class="logincontainer">
+        <h1 class="loginfont">SignIn<h1>
+        <form action="{{url_for('loginPage')}}" method="POST">
+            <input class="form-control logininputbox" name="usrEmail" type="email" id="loginEmail" placeholder="Email">
+            <input class="form-control logininputbox" name="UsrPwd" type="password" id="loginPassword" placeholder="Password">
+            <h4 class="text-center loginfont">Or</h4>
+            <ul class="social-icons">
+                <li><a href="#"><i class="fa-brands fa-google fa-xl"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-facebook-f fa-xl"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+                <li><a href="#"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+            </ul>
+            <button class="btn btn-success" style="width:400px; margin-top:10px;"  type="submit">Login</button>
+        <form>
+    </div>
+</div>
+
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='jquery-2.1.0.min.js') }}"></script>
+
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='popper.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+<!-- Plugins -->
+<script src="{{ url_for('static', filename='scrollreveal.min.js') }}"></script>
+<script src="{{ url_for('static', filename='waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery.counterup.min.js') }}"></script>
+<script src="{{ url_for('static', filename='imgfix.min.js') }}"></script> 
+<script src="{{ url_for('static', filename='mixitup.js') }}"></script> 
+<script src="{{ url_for('static', filename='accordions.js') }}"></script>
+
+<!-- Global Init -->
+<script src="{{ url_for('static', filename='custom.js') }}"></script>
+</body>
+</html>

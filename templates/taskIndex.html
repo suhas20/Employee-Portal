@@ -3,88 +3,121 @@
 <script src="https://kit.fontawesome.com/4b6059de82.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-<style>
-    tr.clickable-row {
-        cursor: pointer;
-    }
-</style>
 <body>
-    {%  include "NavBar.html" %}
+    {% include "NavBar.html" %}
     <div class="container">
-            <h1 id="Header">Data from Database</h1>
+        <h1 id="Header">Data from Database</h1>
 
-            {%with messages = get_flashed_messages()%}
-            {%if messages%}
-            {% for message in messages %}
-            <div class="alert alert-success alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{message}}
-            </div>
-            {%endfor%}
-            {%endif%}
-            {%endwith%}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
 
-            <div class="row align-items-center">
-                <div class="col">
-                    <table id = "DataTable" class="center table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Task ID</th>
-                                <th>Assigned TO</th>
-                                <th>Created On</th>
-                                <th>Short Description</th>
-                                <th>Work Notes</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for row in tasks %}
-                            <tr class="clickable-row" data-task-id="{{ row[0] }}" data-toggle="modal" data-target="#taskModal">
-                                <td>{{ row[0] }}</td>
-                                <td>{{ row[1] }}</td>
-                                <td>{{ row[2] }}</td>
-                                <td>{{ row[3] }}</td>
-                                <td>{{ row[4] }}</td>
-                                <td>
-                                <a href="/delete/{{row[0]}}" onclick="return confirm('Are you sure you want to delete?')" style="color: #da1651; background-color: transparent; border: none;" class="btn btn-danger">
-                                    <i class="fa-solid fa-trash"></i>
+        <div class="row align-items-center">
+            <div class="col">
+                <table id="DataTable" class="center table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Assigned TO</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in tasks %}
+                        <tr>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>
+                                {% if row[2] == none %}
+                                <a href="#selectTrainerModal{{row[0]}}" data-toggle="modal" class="btn btn-danger" style="color: #da1651; background-color: transparent; border: none;">
+                                    Assign
                                 </a>
-                                </td>
-                            </tr>
-                
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                                {% else %}
+                                <a href="#updateTrainerModal{{row[0]}}" data-toggle="modal" class="btn btn-danger" style="color: #da1651; background-color: transparent; border: none;">
+                                    Transfer
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
 
-            <!-- Modal -->
-        <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="taskModalLabel">Task Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                <p><strong>Task ID:</strong> <span id="TaskID"></span></p>
-                <p><strong>Assigned TO:</strong> <span id="EmpName"></span></p>
-                <p><strong>Created On:</strong> <span id="CreatedOn"></span></p>
-                <p><strong>Short Description:</strong> <span id="ShortDescription"></span></p>
-                <p><strong>Work Notes:</strong> <span id="WorkNotes"></span></p>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                        <!-- Modal for selecting trainer -->
+                        <div class="modal fade" id="selectTrainerModal{{row[0]}}" tabindex="-1" aria-labelledby="modalLabel{{ row[0] }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel{{ row[0] }}">Assign Trainer</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('assignClient') }}" method="POST">
+                                            <div class="form-group">
+                                                <label>Employee Name</label>
+                                                <select class="form-select" name="EmpName">
+                                                    {% for names in TrainerNames %}
+                                                    <option value="{{ names[2] }}">{{ names[2] }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <input type="hidden" name="ClientID" value="{{ row[0] }}">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal End -->
+
+                        <!-- Modal for updating trainer -->
+                        <div class="modal fade" id="updateTrainerModal{{row[0]}}" tabindex="-1" aria-labelledby="modalLabel{{ row[0] }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel{{ row[0] }}">Transfer Trainer</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('transferClient') }}" method="POST">
+                                            <div class="form-group">
+                                                <label>Employee Name</label>
+                                                <select class="form-select" name="EmpName">
+                                                    {% for names in TrainerNames %}
+                                                    <option value="{{ names[2] }}">{{ names[2] }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <input type="hidden" name="ClientID" value="{{ row[0] }}">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Transfer</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal End -->
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            </div>
-        </div>       
+        </div>
     </div>
-    
-<script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
 
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
