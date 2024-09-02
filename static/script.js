@@ -115,4 +115,66 @@ $(document).ready(function(){
   });
 });
 
+//password visibility in client profile
+document.addEventListener('DOMContentLoaded', function() {
+  var passwordField = document.getElementById('passwordField');
+  var togglePassword = document.getElementById('togglePassword');
+  var actualPassword = passwordField.getAttribute('data-password');
+  var isPasswordVisible = false;
+
+  togglePassword.addEventListener('click', function() {
+      if (isPasswordVisible) {
+          passwordField.textContent = '******';
+          this.classList.remove('fa-eye-slash');
+          this.classList.add('fa-eye');
+      } else {
+          passwordField.textContent = actualPassword;
+          this.classList.remove('fa-eye');
+          this.classList.add('fa-eye-slash');
+      }
+      isPasswordVisible = !isPasswordVisible;
+  });
+});
+
+//display today's date in client schedule
+const date = new Date();
+    const formattedDate = ("0" + date.getDate()).slice(-2) +"-"+
+                          ("0" + (date.getMonth() + 1)).slice(-2) +"-" +
+                          ("" + date.getFullYear()).slice(-2);
+    document.getElementById("currentDate").innerText = formattedDate;
+
+//to display random 1 hour timing
+function getRandomTimeInterval(timeRange) {
+  // Split the range into start and end times
+  const [startTime, endTime] = timeRange.split(" - ");
+  
+  // Parse hours from start and end times
+  const startHour = parseInt(startTime);
+  const endHour = parseInt(endTime);
+  
+  // Calculate whether it's AM or PM
+  const startAmPm = startTime.includes('AM') ? 0 : 12;
+  const endAmPm = endTime.includes('AM') ? 0 : 12;
+
+  // Convert to 24-hour format
+  const startHour24 = startHour + startAmPm;
+  const endHour24 = (endHour % 12) + endAmPm;
+
+  // Generate a random hour between start and end
+  const randomHour = Math.floor(Math.random() * (endHour24 - startHour24)) + startHour24;
+  const nextHour = randomHour + 1;
+
+  // Convert back to 12-hour format
+  const formatHour = (hour) => {
+      const amPm = hour >= 12 ? 'PM' : 'AM';
+      const formattedHour = hour % 12 || 12; // Convert to 12-hour format
+      return `${formattedHour} ${amPm}`;
+  };
+
+  return `${formatHour(randomHour)} - ${formatHour(nextHour)}`;
+}
+
+const timeRangeFromDB = randomTime.getAttribute('data-Time');
+const randomTimeInterval = getRandomTimeInterval(timeRangeFromDB);
+document.getElementById("randomTime").innerText = randomTimeInterval;
   

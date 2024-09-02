@@ -1,1 +1,179 @@
-<p>Client Home</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='templatemo-training-studio.css') }}">
+  <script src="https://kit.fontawesome.com/4b6059de82.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 16px;
+        text-decoration: none;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        list-style: none;
+    }
+
+    .loginbg {
+        height: 100vh;
+        background-color: transparent; /* or match with your background */
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    section {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .container.py-5 {
+        padding-top: 180px !important;
+        padding-bottom: 0 !important;
+        margin: 0 auto;
+    }
+
+    .card {
+        background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent */
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
+<body>
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+  <div class="container">
+      <div class="row">
+          <div class="col-12">
+              <nav class="main-nav">
+                  <!-- ***** Logo Start ***** -->
+                  <a href="index.html" class="logo">Training<em> Studio</em></a>
+                  <!-- ***** Logo End ***** -->
+                  <!-- ***** Menu Start ***** -->
+                  <ul class="nav">
+                      <li class="scroll-to-section"><a href="clientProfile">Home</a></li>
+                      <li class="scroll-to-section"><a href="Myschedule">My Schedule</a></li>
+                      <li class="scroll-to-section"><a href="#">Welcome back {{username}}!!</a></li>
+                      <li class="scroll-to-section"><a href="Logout">Logout</a></li>
+                  </ul>
+                  <!-- ***** Menu End ***** -->
+              </nav>
+          </div>
+      </div>
+  </div>
+</header>
+<!-- ***** Header Area End ***** -->
+
+<div class="loginbg">
+    <section>
+        <div class="container py-5">
+            <div class="row">
+                {% for details in [data] %}
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                class="rounded-circle img-fluid" style="width: 150px;">
+                            <h5 class="my-3">{{details[3]}}</h5>
+                            <p class="text-muted mb-4"><b>UK</b></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Full Name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{details[3]}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{details[1]}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">User Name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{details[4]}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Password</p>
+                                </div>
+                                <div class="col-sm-7">
+                                    <p id="passwordField" class="text-muted mb-0" data-password="{{ details[2] }}">******</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <i id="togglePassword" class="fa fa-eye" style="cursor: pointer;"></i>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Address</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><B>UK</B></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='jquery-2.1.0.min.js') }}"></script>
+
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='popper.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+<!-- Plugins -->
+<script src="{{ url_for('static', filename='scrollreveal.min.js') }}"></script>
+<script src="{{ url_for('static', filename='waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='jquery.counterup.min.js') }}"></script>
+<script src="{{ url_for('static', filename='imgfix.min.js') }}"></script> 
+<script src="{{ url_for('static', filename='mixitup.js') }}"></script> 
+<script src="{{ url_for('static', filename='accordions.js') }}"></script>
+
+<!-- Global Init -->
+<script src="{{ url_for('static', filename='custom.js') }}"></script>
+<script src="{{url_for('static',filename='script.js')}}"></script>
+</body>
+</html>

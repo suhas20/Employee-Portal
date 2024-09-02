@@ -53,7 +53,7 @@
     float: left;
 }
 .sidebar {
-    height: 114vh;
+    height: 80vh;
     overflow: auto;
 }
 
@@ -218,4 +218,12 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
+ }
+ .TrainerCard{
+    color: #ECF9FF;
+    font-weight: 300;
+ }
+ .accordion{
+    display:flex;
+    align-items: center;
  }

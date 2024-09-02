@@ -12,38 +12,7 @@
     </head>
     <body>
         <div class="container-fluid">
-            <!-- Header -->
-            <div class="row header">
-                <div class="col-12 p-3">
-                  <img src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEDJIBa9cOKUUV31h-vF2UOx0DxP4H9Dfs4g&s" class = "Logo">
-                    <h2>Employee Portal</h2>
-                    <ul class="nav justify-content-center centerlist">
-                        <li class="nav-item">
-                            <a href="userIndex" class="nav-link">
-                                Home
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="getShifts" class="nav-link">
-                                Shift request
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="timesheet" class="nav-link">
-                                Timesheet
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="leave" class="nav-link">
-                                Apply Leave
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+          {%include "Trainer/TrainerNav.html"%}
     
             <!-- Main content with sidebar and right section -->
             <div class="row">
@@ -55,7 +24,7 @@
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                       <li class="nav-item">
-                        <a href="getShiftRequest" class="nav-link active" aria-current="page">
+                        <a href="getShifts" class="nav-link active" aria-current="page">
                           <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
                           Home
                         </a>
@@ -85,32 +54,11 @@
                         </a>
                       </li>
                     </ul>
-                    <hr>
-                    <div class="dropdown">
-                      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>mdo</strong>
-                      </a>
-                      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
-                      </ul>
-                    </div>
+                    
                   </div>
                 <div class="col-10">
                     <div class="container">
                         <form action="{{url_for('postRequest')}}", method="POST">
-                            <div class="form-group mb-4">
-                                <label class="form-label" for="registerName">Employee Name:</label>
-                                <input type="text" name="EmpName" id="registerName" class="form-control"  placeholder="Enter Name"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Employee Email:</label>
-                                <input type="Email" class="form-control" name="Empemail"  placeholder="Enter Email" required>
-                              </div>
                             <div class="form-group">
                                 <label>Required Shift</label>
                                 <select class="form-select" name ="shift">

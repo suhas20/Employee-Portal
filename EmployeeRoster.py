@@ -87,7 +87,7 @@ def loginPage():
                 if isAdmin == 1:
                     return redirect(url_for('Index'))
                 elif isAdmin == 2:
-                    return render_template('Client/ClientHome.html')
+                    return redirect(url_for('clientIndex'))
                 else:
                     return redirect(url_for('userIndex'))
             else:
@@ -97,6 +97,11 @@ def loginPage():
         sqlcon.close()
     return render_template('Login/login1.html')
 
+@app.route('/Logout',methods = ['GET'])
+def logout():
+    session['username'] = " "
+    return redirect(url_for('Home'))
+
 #-------------------------- End login functionalities--------------------------------------
 
 
@@ -104,7 +109,12 @@ def loginPage():
 def Home():
     return render_template('home/index.html')  #Login.html
 
-@app.route('/index')
+@app.route('/Index')
+def clientIndex():
+    username = session['username']
+    return redirect(url_for('clientProfile'))
+
+@app.route('/Adminindex')
 def Index():
     username = session['username']
     clients = count("assignee")
@@ -124,31 +134,38 @@ def count(tablename):
 @app.route('/userIndex')
 def userIndex():
     notifications = retriveNotifications()
-    return render_template('userIndex.html',notifications = notifications)
+    username = session['username']
+    return render_template('userIndex.html',notifications = notifications,username = username)
 
 
 #Funtion to grt Shiftrequest page
 @app.route('/getShifts')
 def getShiftRequest():
-    return render_template('Shiftrequest.html')
+    username = session['username']
+    return render_template('Shiftrequest.html',username = username)
 
 #Function to post requests
 @app.route('/sendRequest', methods=['POST'])
 def postRequest():
     if request.method == "POST":
         shiftID = str(uuid.uuid4())
-        empName = request.form.get("EmpName")
-        empEmail = request.form.get("Empemail")
+        empName = session['username']
         month = request.form.get("month")
         shift = request.form.get("shift")
         reason = request.form.get("reason")
+        status = 2
         
         sqlcon = connect_to_database()
         cursor = sqlcon.cursor()
-        
-        Query1 = "SELECT EmpAccID FROM EmpAccounts WHERE EmpEmail = ?"
-        print(f"Executing Query1: {Query1} with empEmail: {empEmail}")
-        cursor.execute(Query1, (empEmail))
+        Query1 = """
+        Select ea.EmpEmail from Employees e
+        join EmpAccounts ea on e.EmpAccID = ea.EmpAccID
+        where e.EmpName = ?
+        """
+        res = cursor.execute(Query1,(empName))
+        empEmail = res.fetchone()[0]
+        Query2 = "SELECT EmpAccID FROM EmpAccounts WHERE EmpEmail = ?"
+        cursor.execute(Query2, (empEmail))
         result = cursor.fetchone()
         session['notification'] = []
         session['flag'] = 1 #-------------------------------------------------->#needs to check
@@ -156,10 +173,10 @@ def postRequest():
         if result:
             empID = result.EmpAccID
             Query2 = """
-            INSERT INTO ShiftRequest (ShiftID, EmpID, EmpName, EmpEmail, Shift, ForMonth, Reason) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO ShiftRequest (ShiftID, EmpID, EmpName, EmpEmail, Shift, ForMonth, Reason,Action) 
+            VALUES (?, ?, ?, ?, ?, ?, ?,?)
             """
-            cursor.execute(Query2, (shiftID, empID, empName, empEmail, shift, month, reason))
+            cursor.execute(Query2, (shiftID, empID, empName, empEmail, shift, month, reason,status))
             sqlcon.commit()
         
             sqlcon.close()
@@ -172,15 +189,31 @@ def postRequest():
 #Function to fetch shift requests
 @app.route('/getRequests')
 def getRequests():
-    sqlcon = connect_to_database()
-    cursor= sqlcon.cursor()
-    sqlQuery = """
-    SELECT * from Shiftrequest 
+    username = session['username']
+    slqCon = connect_to_database()
+    cursor = slqCon.cursor()
+    sqlQUERY2 = """
+    SELECT * From EmpAccounts where EmpName = ?
     """
-    cursor.execute(sqlQuery)
-    data = [row for row in cursor]
-    sqlcon.close()
-    return render_template("ShiftsRequestIndex.html",reqs = data)
+    res = cursor.execute(sqlQUERY2,username)
+    emp = cursor.fetchone()
+    isAdmin = emp[5]
+    sqlQuery1 ="""
+        SELECT * From Shiftrequest
+        """
+    cursor.execute(sqlQuery1)
+    data = cursor.fetchall()
+    if isAdmin == 1:
+        return render_template('Admin/ShiftRequests.html',data = data,username = username)
+    else:
+        sqlQuery3 = """
+        SELECT * From ShiftRequest 
+        where EmpName = ?
+        """
+        cursor.execute(sqlQuery3,(username))
+        res = cursor.fetchall()
+        print(res)
+        return render_template('ShiftsRequestIndex.html',data = res,username = username)
 
 #Funtion to post Timesheet 
 @app.route('/gettimesheet', methods = ['POST','GET'])
@@ -263,7 +296,7 @@ def getLeaveRequest():
         """
         cursor.execute(sqlQuery3,(username))
         res = cursor.fetchall()
-        return render_template('ApplyLeave.html',data = res)
+        return render_template('ApplyLeave.html',data = res,username = username)
 
 #Function to post the leave data
 @app.route('/postLeave', methods = ['POST'])
@@ -312,6 +345,46 @@ def deleteLeave(id):
     sqlcon.commit()
     sqlcon.close()
     return redirect(url_for('getLeaveRequest'))
+
+@app.route('/MyClients',methods = ['GET'])
+def MyClients():
+    username = session['username']
+    sqlcon = connect_to_database()
+    cursor = sqlcon.cursor()
+    sqlQuery = """
+    Select ea.EmpName,ea.EmpEmail,ea.EmpUsername from assignee a
+    join Employees e on e.EmpID = a.TrainerID
+    join EmpAccounts ea on ea.EmpAccID = a.ClientID
+    where e.EmpName = ?
+    """
+    res = cursor.execute(sqlQuery,(username))
+    data = res.fetchall()[0]
+    return render_template("Trainer/MyClients.html",data= data)
+
+@app.route('/MyFeedback',methods=['GET'])
+def feedbacks():
+    username = session['username']
+    sqlcon = connect_to_database()
+    cursor = sqlcon.cursor()
+    sqlQuery = """
+    Select * from Feedback where trainerName = ?
+    """
+    cursor.execute(sqlQuery,(username))
+    data = cursor.fetchall()
+    return render_template("Trainer/MyFeedbacks.html",data = data,username = username)
+
+@app.route('/MyProfile',methods=['GET'])
+def myProfile():
+    username = session['username']
+    sqlcon = connect_to_database()
+    cursor = sqlcon.cursor()
+    sqlQuery = """
+    SELECT * from EmpAccounts where EmpName = ?
+    """
+    cursor.execute(sqlQuery,(username))
+    data = cursor.fetchall()[0]
+    print(data)
+    return render_template('Trainer/MyProfile.html',username = username,data = data)
 
 #----------------------------End of Trainer Portal -------------------------------
 
@@ -424,7 +497,7 @@ def displayData():
     SELECT ea.EmpName 
     FROM EmpAccounts ea
     LEFT JOIN Employees e ON ea.EmpAccID = e.EmpAccID
-    WHERE ea.IsAdmin = 2 AND e.EmpAccID IS NULL
+    WHERE ea.IsAdmin = 0 AND e.EmpAccID IS NULL
     """
     Sql_query2="""
     Select EmpName from Employees
@@ -438,6 +511,30 @@ def displayData():
     TrainerNames = [row[0] for row in result]
     return render_template('displayRoster.html', data=data,EmpNames = emp_names,TrainersName = TrainerNames)
 
+@app.route('/AcceptShiftrequest/<string:id>',methods = ['GET'])
+def acceptShiftrequest(id):
+    sqlcon = connect_to_database()
+    cursor = sqlcon.cursor()
+    sqlQuery = """
+    UPDATE Shiftrequest SET Action = 1 where ShiftID = ?
+    """
+    cursor.execute(sqlQuery,(id))
+    sqlcon.commit()
+    sqlcon.close()
+    return redirect(url_for('getRequests'))
+
+#Function to Reject Shift request 
+@app.route('/RejectShiftrequest/<string:id>',methods = ['GET'])
+def rejectShiftrequest(id):
+    sqlcon = connect_to_database()
+    cursor = sqlcon.cursor()
+    sqlQuery = """
+    UPDATE Shiftrequest SET Action = 0 where ShiftID = ?
+    """
+    cursor.execute(sqlQuery,(id))
+    sqlcon.commit()
+    sqlcon.close()
+    return redirect(url_for('getRequests'))
 #Function to get Timesheet page
 @app.route('/timesheet')
 def getTimesheet():
@@ -463,7 +560,7 @@ def getTimesheet():
         """
         cursor.execute(sqlQuery3,(username))
         res = cursor.fetchall()
-        return render_template('Timesheet.html',data = res)
+        return render_template('Timesheet.html',data = res,username = username)
 
 #Function to accept timesheet 
 @app.route('/Accept/<string:id>',methods = ['GET'])
@@ -568,11 +665,24 @@ def getAlltrainers():
     cursor = sql_con.cursor()
     
     sql_query = """
-    Select * from EmpAccounts where IsAdmin = 2
+    Select * from EmpAccounts where IsAdmin = 0
     """
     cursor.execute(sql_query)
     data = cursor.fetchall()
     return render_template('Admin/Trainers.html',res = data)
+
+
+@app.route('/Feedbacks',methods=['GET'])
+def getAllFeedbacks():
+    sql_con = connect_to_database()
+    cursor = sql_con.cursor()
+    
+    sql_query = """
+    Select * from Feedback
+    """
+    cursor.execute(sql_query)
+    data = cursor.fetchall()
+    return render_template('Admin/Feedbacks.html',res = data)
     
 
 #------------------------- End of Admin Portal -------------------------------
@@ -609,17 +719,79 @@ def retriveNotifications():
     sqlQuery2 = """
     SELECT * From Employees where EmpName = ?
     """
+    res = "No messages"
     cursor.execute(sqlQuery2,(empname))
     employee = cursor.fetchone()
     if employee:
         empID = employee[0]
         cursor.execute(sqlQuery,(empID))
         data = cursor.fetchall()
-        res = [{'Message': row.Message} for row in data]
+        
+        if data:
+            res = [{'Message': row[0]} for row in data]
+        else:
+            res = "No messages"
+        print(res)
     sqlcon.close()
     return res
 
 #------------------------------ End of Notification ----------------------------------
+
+
+#------------------------------ Start of client portal --------------------------------
+
+@app.route('/clientProfile',methods = ['GET'])
+def clientProfile():
+    username = session['username']
+    sqlcon = connect_to_database()
+    cursor = sqlcon.cursor()
+    sqlQuery = """
+    SELECT * from EmpAccounts where EmpName = ?
+    """
+    cursor.execute(sqlQuery,(username))
+    data = cursor.fetchall()[0]
+    return render_template('Client/ClientHome.html',username = username,data = data)
+    
+@app.route('/Myschedule', methods = ['GET'])
+def mySchedule():
+    username = session['username']
+    sqlcon = connect_to_database()
+    cursor = sqlcon.cursor()
+    sqlQuery = """
+    SELECT e.EmpName,e.EmpShift from Employees e
+    Join assignee a on e.EmpID = a.TrainerID
+    Join Empaccounts ea on ea.EmpAccID = a.ClientID
+    where ea.EmpName = ?
+    """
+    cursor.execute(sqlQuery,(username))
+    res = cursor.fetchall()[0]
+    return render_template('Client/ClientSchedule.html',username = username,data = res)
+    
+@app.route('/feedback',methods=['POST'])
+def feedback():
+    if request.method == 'POST':
+        username = session['username']
+        sqlcon = connect_to_database()
+        cursor = sqlcon.cursor()
+        Id = uuid.uuid4()
+        mes = request.form.get("message")
+        date = datetime.now().strftime('%Y-%m-%d')
+        print(mes)
+        sqlquery1 ="""
+        Select e.EmpName from Employees e
+        join assignee a on e.EmpID = a.TrainerID
+        join EmpAccounts ea on ea.EmpAccID = a.ClientID
+        where ea.EmpName = ?
+        """
+        sqlQuery2 = """
+        Insert into Feedback(FeedbackID,ClientName,TrainerName,Message,Date) values(?,?,?,?,?)
+        """
+        res = cursor.execute(sqlquery1,(username))
+        TrainerName = res.fetchone()[0]
+        cursor.execute(sqlQuery2,(Id,username,TrainerName,mes,date))
+        sqlcon.commit()
+        sqlcon.close()
+    return redirect(url_for('mySchedule'))
 
 if __name__ == '__main__':
     app.run(debug=True)

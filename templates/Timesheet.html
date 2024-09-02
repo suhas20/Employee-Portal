@@ -15,38 +15,7 @@
     </head>
     <body>
         <div class="container-fluid">
-            <!-- Header -->
-            <div class="row header">
-                <div class="col-12 p-3">
-                    <img src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEDJIBa9cOKUUV31h-vF2UOx0DxP4H9Dfs4g&s" class = "Logo">
-                    <h2>Employee Portal</h2>
-                    <ul class="nav justify-content-center centerlist">
-                        <li class="nav-item">
-                            <a href="userIndex" class="nav-link">
-                                Home
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="getShifts" class="nav-link">
-                                Shift request
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="timesheet" class="nav-link">
-                                Timesheet
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="leave" class="nav-link">
-                                Apply Leave
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            {%include "Trainer/TrainerNav.html"%}
     
             <!-- Main content with sidebar and right section -->
             <div class="row">
@@ -59,29 +28,29 @@
                     <div class = "card TimesheetCard">
                         <div class = "row">
                             <div class = "col card datecard btn" data-bs-toggle="modal" data-bs-target="#insertModal">
-                                1 col
+                                Monday
                                 <hr>
-                                <p>Mon</p>
+                                <p hidden>Mon</p>
                             </div>
                             <div class = "col card datecard btn" data-bs-toggle="modal" data-bs-target="#insertModal">
-                                2 col
+                                Tuesday
                                 <hr>
-                                <p>Tue</p>
+                                <p hidden>Tue</p>
                             </div>
                             <div class = "col card datecard btn" data-bs-toggle="modal" data-bs-target="#insertModal">
-                                3 col
+                                Wednesday
                                 <hr>
-                                <p>Wed</p>
+                                <p hidden>Wed</p>
                             </div>
                             <div class = "col card datecard btn" data-bs-toggle="modal" data-bs-target="#insertModal">
-                                4 col
+                                Thursday
                                 <hr>
-                                <p>Thur</p>
+                                <p hidden>Thur</p>
                             </div>
                             <div class = "col card datecard btn" data-bs-toggle="modal" data-bs-target="#insertModal">
-                                5 col
+                                Friday
                                 <hr>
-                                <p>Fri</p>
+                                <p hidden>Fri</p>
                             </div>
                         </div>
                         <div class="row">

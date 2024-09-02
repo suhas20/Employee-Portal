@@ -18,7 +18,7 @@
         <div class="container-fluid">
             <!-- Header -->
             {%include "Trainer/TrainerNav.html"%}
-    
+            
             <!-- Main content with sidebar and right section -->
             <div class="row">
                 <div class="d-flex col-2 flex-column flex-shrink-0 p-3 text-white bg-dark sidebar">
@@ -49,14 +49,34 @@
                     </ul>
                     <hr>
                   </div>
-                <div class="col-10 main">
-                    <div class="row">
-                        <div class="col-12 right p-3">
-                          <div class="container">
-
-                          </div>
+                  <div class="col-10">
+                    <div class = "">
+                        <div class = "col-9">
+                          &nbsp;
+                            {%for details in [data] %}
+                            <div class="card">
+                                <div class="card-header">
+                                <h5>{{details[0]}}</h5>
+                                </div>
+                                <div class="card-body loginbg" style="height:170px;">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                class="rounded-circle img-fluid" style="width: 150px;">
+                                  <div class="row-9">
+                                    <div class = "col">
+                                      <h5 class="TrainerCard">Client Name : {{details[0]}}</h5>
+                                      <h5 class="TrainerCard">Username : {{details[2]}} <span id="currentDate"></span></h5>
+                                    </div>
+                                    <div class = "col">
+                                      <h5 class="TrainerCard">Email : {{details[1]}}<span id="randomTime" ></span></h5>
+                                      <h5 class="TrainerCard">Address : UK</h5>
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+                              </div>
+                              &nbsp;
+                              {%endfor%}
                         </div>
-
                     </div>
                 </div>
             </div>
