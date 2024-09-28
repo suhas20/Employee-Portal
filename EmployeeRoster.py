@@ -764,8 +764,12 @@ def mySchedule():
     where ea.EmpName = ?
     """
     cursor.execute(sqlQuery,(username))
-    res = cursor.fetchall()[0]
-    return render_template('Client/ClientSchedule.html',username = username,data = res)
+    res = cursor.fetchall()
+    if len(res) > 0:
+        result = res.fetchall()[0]
+    else:
+        result = None
+    return render_template('Client/ClientSchedule.html',username = username,data = result)
     
 @app.route('/feedback',methods=['POST'])
 def feedback():
